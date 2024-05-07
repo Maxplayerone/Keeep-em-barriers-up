@@ -15,3 +15,14 @@ consist of killing a certain amount of enemies. After every round
 you would go to a shop and you could buy upgrades etc.
 
 
+-TODO   
+-enemy
+>health
+>dying
+>shooting you
+
+-more enemies
+>idk, find some ideas for different enemies
+
+-weapons
+-guns go puf puf

@@ -24,14 +24,19 @@ main :: proc(){
 		speed = 8.0,
 		forward = rl.Vector2{0.0, -1.0}
 	}
-	
 
 	bullets: [dynamic]Bullet
+
+	enemy := Enemy{
+		rect = rl.Rectangle{200, HEIGHT / 2, 50, 50},
+		color = rl.RED,
+	}
 
 	for !rl.WindowShouldClose(){
 
 		add_bullet := false
-		player, add_bullet = update_player(player)
+		player, add_bullet = player_update(player)
+
 		if add_bullet{
 			bullet := Bullet{
 				radius = BULLET_RADIUS,
@@ -60,12 +65,13 @@ main :: proc(){
 		defer rl.EndDrawing()
 		rl.ClearBackground(rl.BLACK)
 
-		render_player(player)
+		player_render(player)
+		player_draw_forward_vec(player)
+		enemy_render(enemy)
 
 		for bullet in bullets{
 			bullet_render(bullet)
 		}
 
-		fmt.println("bullet size ", len(bullets))
 	}
 }
