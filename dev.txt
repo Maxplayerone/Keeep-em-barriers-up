@@ -1,0 +1,17 @@
+--shooter game---
+
+-basic prerequesites
+
+>I want this game to be replayable. I want to play this game
+when I'm bored
+>I can imagine it being top-down
+>Probably will have some kind of turns and the main objective
+is to get a lot of score
+
+-basic play
+>We can make something similar to daFluffyPotato's game in which
+you had a square-ish arena in which mobs would spawn. Every round would 
+consist of killing a certain amount of enemies. After every round
+you would go to a shop and you could buy upgrades etc.
+
+
