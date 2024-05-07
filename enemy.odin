@@ -5,6 +5,7 @@ import rl "vendor:raylib"
 Enemy :: struct{
     rect: rl.Rectangle,
     color: rl.Color,
+    dead: bool,
 }
 
 enemy_render :: proc(e: Enemy){

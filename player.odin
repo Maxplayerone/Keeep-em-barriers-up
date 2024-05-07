@@ -10,7 +10,7 @@ Player :: struct{
     rotation: f32,
 	size: f32,
 	speed: f32,
-	forward: rl.Vector2
+	forward: rl.Vector2,
 }
 
 player_get_rect :: proc(player: Player) -> rl.Rectangle{
@@ -21,9 +21,8 @@ player_get_center :: proc(player: Player) -> rl.Vector2{
 	return rl.Vector2{player.pos.x + player.size / 2, player.pos.y + player.size / 2}
 }
 
-player_update :: proc(player: Player) -> (Player, bool){
+player_update :: proc(player: Player) -> Player{
 	player := player
-	add_bullet := false
 
 	if rl.IsKeyDown(.W){
 		player.pos.y -= player.speed
@@ -41,11 +40,16 @@ player_update :: proc(player: Player) -> (Player, bool){
 	player.rotation = math.atan2(rl.GetMousePosition().y - player_get_center(player).y, rl.GetMousePosition().x - player_get_center(player).x)
 	player.forward = vec_rotate_rad({0.0, 1.0}, player.rotation - deg_to_rad(90.0))
 
-	if rl.IsMouseButtonPressed(.LEFT){
-		add_bullet = true
-	}
+	return player
+}
 
-	return player, add_bullet
+//we might Player later to figure out which type of bullet
+//to add
+player_add_bullet :: proc() -> bool{
+	if rl.IsMouseButtonPressed(.LEFT){
+		return true
+	}
+	return false
 }
 
 player_draw_forward_vec :: proc(player: Player){

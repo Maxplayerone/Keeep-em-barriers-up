@@ -7,12 +7,6 @@ import rl "vendor:raylib"
 WIDTH  :: 960
 HEIGHT :: 720
 
-is_bullet_outside_screen :: proc(bullet: Bullet) -> bool{
-	width := f32(WIDTH)
-	height := f32(HEIGHT)
-	return bullet.pos.x > width || bullet.pos.x < 0.0 || bullet.pos.y > height || bullet.pos.y < 0.0
-}
-
 main :: proc(){
 	rl.InitWindow(WIDTH, HEIGHT, "shooter")
 	defer rl.CloseWindow()
@@ -32,46 +26,78 @@ main :: proc(){
 		color = rl.RED,
 	}
 
-	for !rl.WindowShouldClose(){
+	enemies: [dynamic]Enemy
+	append(&enemies, enemy)
 
-		add_bullet := false
-		player, add_bullet = player_update(player)
+	for !rl.WindowShouldClose(){
+		player = player_update(player)
+
+		add_bullet := player_add_bullet()
 
 		if add_bullet{
 			bullet := Bullet{
 				radius = BULLET_RADIUS,
 				color = BULLET_COLOR,
 				speed = BULLET_SPEED,
-				pos = rl.Vector2{player.pos.x + player.size / 2, player.pos.y},
+				pos = rl.Vector2{player.pos.x + player.size / 2, player.pos.y + player.size / 2},
 				forward = vec_norm(player.forward),
 			}
 			append(&bullets, bullet)
 		}
 
+
+		//ENEMY-BULLET INTERACTION
 		i := 0
+		for i < len(bullets){
+			removed_bullet := false
+			for j in 0..<len(enemies){
+				if is_bullet_colliding_with_enemy(bullets[i], enemies[j]){
+					enemies[j].dead = true
+					unordered_remove(&bullets, i)
+					removed_bullet = true
+				}
+			}
+			if !removed_bullet{
+				i +=1 
+			}
+		}
+
+		//BULLET UPDATING AND DELETING
+		i = 0
 		for i < len(bullets){
 			if is_bullet_outside_screen(bullets[i]){
 				unordered_remove(&bullets, i)
-			}else{
+			}
+			else{
 				bullets[i] = bullet_update(bullets[i])
 				i += 1
 			}
-
 		}
 
+		//ENEMY UPDATING AND DELETING
+		i = 0
+		for i < len(enemies){
+			if enemies[i].dead{
+				unordered_remove(&enemies, i)
+			}
+			else{
+				i += 1
+			}
+		}
 
 		//rendering
 		rl.BeginDrawing()
 		defer rl.EndDrawing()
 		rl.ClearBackground(rl.BLACK)
 
-		player_render(player)
-		player_draw_forward_vec(player)
-		enemy_render(enemy)
-
 		for bullet in bullets{
 			bullet_render(bullet)
 		}
 
+		player_render(player)
+
+		for enemy in enemies{
+			enemy_render(enemy)
+		}
 	}
 }
