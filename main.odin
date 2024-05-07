@@ -24,6 +24,8 @@ main :: proc(){
 	enemy := Enemy{
 		rect = rl.Rectangle{200, HEIGHT / 2, 50, 50},
 		color = rl.RED,
+		health = 100,
+		max_health = 100,
 	}
 
 	enemies: [dynamic]Enemy
@@ -41,6 +43,7 @@ main :: proc(){
 				speed = BULLET_SPEED,
 				pos = rl.Vector2{player.pos.x + player.size / 2, player.pos.y + player.size / 2},
 				forward = vec_norm(player.forward),
+				dmg = BULLET_DAMAGE, 
 			}
 			append(&bullets, bullet)
 		}
@@ -52,7 +55,11 @@ main :: proc(){
 			removed_bullet := false
 			for j in 0..<len(enemies){
 				if is_bullet_colliding_with_enemy(bullets[i], enemies[j]){
-					enemies[j].dead = true
+					enemies[j].health -= bullets[i].dmg
+					if enemies[j].health <= 0{
+						enemies[j].dead = true
+					}
+
 					unordered_remove(&bullets, i)
 					removed_bullet = true
 				}
@@ -98,6 +105,7 @@ main :: proc(){
 
 		for enemy in enemies{
 			enemy_render(enemy)
+			enemy_render_healthbar(enemy)
 		}
 	}
 }

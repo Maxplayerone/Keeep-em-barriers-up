@@ -5,6 +5,7 @@ import rl "vendor:raylib"
 BULLET_RADIUS :: 10.0
 BULLET_SPEED :: 15.0
 BULLET_COLOR :: rl.LIME
+BULLET_DAMAGE :: 20
 
 Bullet :: struct{
     pos: rl.Vector2,
@@ -12,6 +13,7 @@ Bullet :: struct{
     radius: f32,
     color: rl.Color,
     speed: f32,
+    dmg: int,
 }
 
 is_bullet_outside_screen :: proc(bullet: Bullet) -> bool{
