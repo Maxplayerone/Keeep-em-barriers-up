@@ -26,6 +26,8 @@ main :: proc(){
 		color = rl.RED,
 		health = 100,
 		max_health = 100,
+		speed = 5.0,
+		to_player_radius = 200.0,
 	}
 
 	enemies: [dynamic]Enemy

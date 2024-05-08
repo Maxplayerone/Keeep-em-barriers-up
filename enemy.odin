@@ -5,10 +5,14 @@ import rl "vendor:raylib"
 Enemy :: struct{
     rect: rl.Rectangle,
     color: rl.Color,
+
     health: int,
     max_health: int,
     dead: bool,
+
     forward: rl.Vector2,
+    speed: f32,
+    to_player_radius: f32, //how close can enemy be to player
 }
 
 enemy_pos :: proc(e: Enemy) -> rl.Vector2{
@@ -21,7 +25,14 @@ enemy_center :: proc(e: Enemy) -> rl.Vector2{
 
 enemy_update :: proc(e: Enemy, player_pos: rl.Vector2) -> Enemy{
     e := e
-    e.forward = vec_norm(player_pos - enemy_pos(e))
+    player_enemy_dist := player_pos - enemy_pos(e)
+    e.forward = vec_norm(player_enemy_dist)
+
+    if vec_len(player_enemy_dist) > e.to_player_radius{
+        pos := enemy_pos(e) + e.forward * e.speed
+        e.rect.x = pos.x
+        e.rect.y = pos.y
+    }
     return e
 }
 
