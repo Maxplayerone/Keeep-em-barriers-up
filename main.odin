@@ -88,6 +88,7 @@ main :: proc(){
 				unordered_remove(&enemies, i)
 			}
 			else{
+				enemies[i] = enemy_update(enemies[i], player.pos)
 				i += 1
 			}
 		}

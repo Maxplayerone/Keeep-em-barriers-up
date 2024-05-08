@@ -26,3 +26,11 @@ you would go to a shop and you could buy upgrades etc.
 
 -weapons
 -guns go puf puf
+
+
+--short term stuff
+>enemy forward vector to player
+>enemy moves to player
+>enemy stops at a certain radius before touching the player
+>enemy shoots
+and then we can add new enemies I guess

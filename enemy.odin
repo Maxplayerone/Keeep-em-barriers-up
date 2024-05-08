@@ -7,11 +7,27 @@ Enemy :: struct{
     color: rl.Color,
     health: int,
     max_health: int,
-    dead: bool
+    dead: bool,
+    forward: rl.Vector2,
+}
+
+enemy_pos :: proc(e: Enemy) -> rl.Vector2{
+    return rl.Vector2{e.rect.x, e.rect.y}
+}
+
+enemy_center :: proc(e: Enemy) -> rl.Vector2{
+    return rl.Vector2{e.rect.x + e.rect.width / 2, e.rect.y + e.rect.height / 2}
+}
+
+enemy_update :: proc(e: Enemy, player_pos: rl.Vector2) -> Enemy{
+    e := e
+    e.forward = vec_norm(player_pos - enemy_pos(e))
+    return e
 }
 
 enemy_render :: proc(e: Enemy){
     rl.DrawRectangleRec(e.rect, e.color)
+    rl.DrawLineEx(enemy_center(e), enemy_center(e) + e.forward * 50.0, 7.0, rl.ORANGE)
 }
 
 enemy_render_healthbar :: proc(e: Enemy){
