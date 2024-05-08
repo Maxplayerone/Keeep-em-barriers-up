@@ -13,6 +13,10 @@ Enemy :: struct{
     forward: rl.Vector2,
     speed: f32,
     to_player_radius: f32, //how close can enemy be to player
+
+    time_btw_shots: f32,
+    cur_time: f32,
+    can_shoot: bool,
 }
 
 enemy_pos :: proc(e: Enemy) -> rl.Vector2{
@@ -33,11 +37,21 @@ enemy_update :: proc(e: Enemy, player_pos: rl.Vector2) -> Enemy{
         e.rect.x = pos.x
         e.rect.y = pos.y
     }
+
+    e.cur_time += 1.0
+    if e.cur_time >= e.time_btw_shots{
+        e.can_shoot = true
+        e.cur_time = 0.0
+    }
+
     return e
 }
 
 enemy_render :: proc(e: Enemy){
     rl.DrawRectangleRec(e.rect, e.color)
+}
+
+enemy_render_forward :: proc(e: Enemy){
     rl.DrawLineEx(enemy_center(e), enemy_center(e) + e.forward * 50.0, 7.0, rl.ORANGE)
 }
 

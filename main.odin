@@ -28,6 +28,7 @@ main :: proc(){
 		max_health = 100,
 		speed = 5.0,
 		to_player_radius = 200.0,
+		time_btw_shots = 30.0,
 	}
 
 	enemies: [dynamic]Enemy
@@ -46,6 +47,7 @@ main :: proc(){
 				pos = rl.Vector2{player.pos.x + player.size / 2, player.pos.y + player.size / 2},
 				forward = vec_norm(player.forward),
 				dmg = BULLET_DAMAGE, 
+				attack_enemy = true
 			}
 			append(&bullets, bullet)
 		}
@@ -56,7 +58,7 @@ main :: proc(){
 		for i < len(bullets){
 			removed_bullet := false
 			for j in 0..<len(enemies){
-				if is_bullet_colliding_with_enemy(bullets[i], enemies[j]){
+				if bullets[i].attack_enemy && is_bullet_colliding_with_enemy(bullets[i], enemies[j]){
 					enemies[j].health -= bullets[i].dmg
 					if enemies[j].health <= 0{
 						enemies[j].dead = true
@@ -91,6 +93,22 @@ main :: proc(){
 			}
 			else{
 				enemies[i] = enemy_update(enemies[i], player.pos)
+				if enemies[i].can_shoot{
+
+					bullet := Bullet{
+						radius = BULLET_RADIUS,
+						color = BULLET_COLOR,
+						speed = BULLET_SPEED,
+						pos = enemy_center(enemies[i]),
+						forward = enemies[i].forward,
+						dmg = BULLET_DAMAGE, 
+						attack_enemy = false,
+					}
+					append(&bullets, bullet)
+
+					enemies[i].can_shoot = false
+				}
+
 				i += 1
 			}
 		}

@@ -14,6 +14,7 @@ Bullet :: struct{
     color: rl.Color,
     speed: f32,
     dmg: int,
+    attack_enemy: bool,
 }
 
 is_bullet_outside_screen :: proc(bullet: Bullet) -> bool{
