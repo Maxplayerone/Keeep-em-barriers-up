@@ -23,8 +23,8 @@ is_bullet_outside_screen :: proc(bullet: Bullet) -> bool{
 	return bullet.pos.x > width || bullet.pos.x < 0.0 || bullet.pos.y > height || bullet.pos.y < 0.0
 }
 
-is_bullet_colliding_with_enemy :: proc(b: Bullet, e: Enemy) -> bool{
-    return b.pos.x > e.rect.x && b.pos.x < e.rect.x + e.rect.width && b.pos.y > e.rect.y && b.pos.y < e.rect.y + e.rect.height
+is_bullet_colliding_with_rect :: proc(b: Bullet, r: rl.Rectangle) -> bool{
+    return b.pos.x > r.x && b.pos.x < r.x + r.width && b.pos.y > r.y && b.pos.y < r.y + r.height
 }
 
 bullet_update :: proc(bullet: Bullet) -> Bullet{
