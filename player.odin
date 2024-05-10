@@ -10,7 +10,7 @@ Player :: struct{
     rotation: f32,
 	speed: f32,
 	forward: rl.Vector2,
-	health: int,
+	health: f32,
 
 	class: Class,
 }

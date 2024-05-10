@@ -7,8 +7,8 @@ Enemy :: struct{
     color: rl.Color,
     class: Class,
 
-    health: int,
-    max_health: int,
+    health: f32,
+    max_health: f32,
     dead: bool,
 
     forward: rl.Vector2,

@@ -20,9 +20,13 @@ Bullet :: struct{
     color: rl.Color,
     radius: f32,
     speed: f32,
-    dmg: int,
+    dmg: f32,
 
     attack_enemy: bool,
+
+    //specific to shotgun class
+    is_shotgun: bool,
+    dmg_decrement: f32,
 }
 
 create_bullet :: proc(type: Class) -> Bullet{
@@ -45,10 +49,12 @@ create_bullet_normal :: proc() -> Bullet{
 
 create_bullet_shotgun :: proc() -> Bullet{
     return Bullet{
-        color = rl.Color{200, 200, 200, 255},
-        radius = 10.0,
-        speed = 12.0,
-        dmg = 20.0,
+        color = rl.Color{232, 152, 52, 255},
+        radius = 7.0,
+        speed = 15.0,
+        dmg = 40.0,
+        is_shotgun = true,
+        dmg_decrement = 0.9,
     }
 }
 
@@ -65,6 +71,10 @@ is_bullet_colliding_with_rect :: proc(b: Bullet, r: rl.Rectangle) -> bool{
 bullet_update :: proc(bullet: Bullet) -> Bullet{
     bullet := bullet
     bullet.pos += bullet.forward * bullet.speed
+
+    if bullet.is_shotgun{
+        bullet.dmg *= bullet.dmg_decrement
+    }
     return bullet
 }
 

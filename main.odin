@@ -19,13 +19,13 @@ main :: proc(){
 		speed = 8.0,
 		health = 100,
 
-		class = .Normal,
+		class = .Shotgun,
 	}
 
 	bullets: [dynamic]Bullet
 
 	enemy := Enemy{
-		rect = rl.Rectangle{200, HEIGHT / 2, 50, 50},
+		rect = rl.Rectangle{200, HEIGHT / 2, 50.0, 50.0},
 		color = rl.RED,
 		health = 100,
 		max_health = 100,
@@ -44,11 +44,23 @@ main :: proc(){
 		add_bullet := player_add_bullet()
 
 		if add_bullet{
-			bullet := create_bullet(player.class)
-			bullet.pos = player_get_center(player)
-			bullet.forward = vec_norm(player.forward)
-			bullet.attack_enemy = true
-			append(&bullets, bullet)
+
+			if player.class == .Shotgun{
+				for i in 0..<5{
+					angle := deg_to_rad(-15.0 + (f32(i) * 7.5))
+					bullet := create_bullet(player.class)
+					bullet.pos = player_get_center(player)
+					bullet.forward = vec_norm(vec_rotate_rad(player.forward, angle))
+					bullet.attack_enemy = true
+					append(&bullets, bullet)
+				}
+			}else{
+				bullet := create_bullet(player.class)
+				bullet.pos = player_get_center(player)
+				bullet.forward = vec_norm(player.forward)
+				bullet.attack_enemy = true
+				append(&bullets, bullet)
+			}
 		}
 
 
@@ -116,6 +128,12 @@ main :: proc(){
 				}
 
 				i += 1
+			}
+		}
+
+		for bullet in bullets{
+			if bullet.is_shotgun{
+				fmt.println("Damage ", bullet.dmg)
 			}
 		}
 
