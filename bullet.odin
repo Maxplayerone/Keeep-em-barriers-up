@@ -10,6 +10,7 @@ BULLET_DAMAGE :: 20
 Class :: enum{
     Normal,
     Shotgun,
+    FireWizard,
 }
 
 Bullet :: struct{
@@ -34,8 +35,19 @@ create_bullet :: proc(type: Class) -> Bullet{
     switch type{
         case .Normal: bullet = create_bullet_normal()
         case .Shotgun: bullet = create_bullet_shotgun()
+        case .FireWizard: bullet = create_bullet_fire_wizard()
     }
     return bullet
+}
+
+get_reload_time_for_class :: proc(type: Class) -> f32{
+    reload_time: f32
+    switch type{
+        case .Normal: reload_time = 30.0
+        case .Shotgun: reload_time = 60.0
+        case .FireWizard: reload_time = 90.0
+    }
+    return reload_time
 }
 
 create_bullet_normal :: proc() -> Bullet{
@@ -55,6 +67,15 @@ create_bullet_shotgun :: proc() -> Bullet{
         dmg = 40.0,
         is_shotgun = true,
         dmg_decrement = 0.9,
+    }
+}
+
+create_bullet_fire_wizard :: proc() -> Bullet{
+    return Bullet{
+        color = rl.Color{200, 200, 200, 255},
+        radius = 10.0,
+        speed = 12.0,
+        dmg = 20.0,
     }
 }
 

@@ -13,6 +13,10 @@ Player :: struct{
 	health: f32,
 
 	class: Class,
+
+	reload_time: f32,
+	cur_time: f32,
+	can_shoot: bool,
 }
 
 player_get_pos :: proc(player: Player) -> rl.Vector2{
@@ -42,13 +46,19 @@ player_update :: proc(player: Player) -> Player{
 	player.rotation = math.atan2(rl.GetMousePosition().y - player_get_center(player).y, rl.GetMousePosition().x - player_get_center(player).x)
 	player.forward = vec_rotate_rad({0.0, 1.0}, player.rotation - deg_to_rad(90.0))
 
+	player.cur_time += 1.0
+	if player.cur_time >= player.reload_time{
+		player.can_shoot = true
+		player.cur_time = 0.0
+	}
+
 	return player
 }
 
 //we might Player later to figure out which type of bullet
 //to add
-player_add_bullet :: proc() -> bool{
-	if rl.IsMouseButtonPressed(.LEFT){
+player_add_bullet :: proc(can_shoot: bool) -> bool{
+	if can_shoot && rl.IsMouseButtonPressed(.LEFT){
 		return true
 	}
 	return false

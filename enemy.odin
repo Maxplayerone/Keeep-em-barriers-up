@@ -15,7 +15,7 @@ Enemy :: struct{
     speed: f32,
     to_player_radius: f32, //how close can enemy be to player
 
-    time_btw_shots: f32,
+    reload_time: f32,
     cur_time: f32,
     can_shoot: bool,
 }
@@ -40,7 +40,7 @@ enemy_update :: proc(e: Enemy, player_pos: rl.Vector2) -> Enemy{
     }
 
     e.cur_time += 1.0
-    if e.cur_time >= e.time_btw_shots{
+    if e.cur_time >= e.reload_time{
         e.can_shoot = true
         e.cur_time = 0.0
     }

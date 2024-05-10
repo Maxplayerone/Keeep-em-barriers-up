@@ -20,7 +20,9 @@ main :: proc(){
 		health = 100,
 
 		class = .Shotgun,
+		cur_time = 1000.0
 	}
+	player.reload_time = get_reload_time_for_class(player.class)
 
 	bullets: [dynamic]Bullet
 
@@ -31,7 +33,7 @@ main :: proc(){
 		max_health = 100,
 		speed = 5.0,
 		to_player_radius = 200.0,
-		time_btw_shots = 45.0,
+		reload_time = get_reload_time_for_class(.Normal),
 		class = .Normal,
 	}
 
@@ -41,9 +43,8 @@ main :: proc(){
 	for !rl.WindowShouldClose(){
 		player = player_update(player)
 
-		add_bullet := player_add_bullet()
-
-		if add_bullet{
+		if player_add_bullet(player.can_shoot){
+			player.can_shoot = false
 
 			if player.class == .Shotgun{
 				for i in 0..<5{
@@ -128,12 +129,6 @@ main :: proc(){
 				}
 
 				i += 1
-			}
-		}
-
-		for bullet in bullets{
-			if bullet.is_shotgun{
-				fmt.println("Damage ", bullet.dmg)
 			}
 		}
 
