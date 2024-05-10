@@ -5,6 +5,7 @@ import rl "vendor:raylib"
 Enemy :: struct{
     rect: rl.Rectangle,
     color: rl.Color,
+    class: Class,
 
     health: int,
     max_health: int,

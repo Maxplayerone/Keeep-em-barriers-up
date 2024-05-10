@@ -11,6 +11,8 @@ Player :: struct{
 	speed: f32,
 	forward: rl.Vector2,
 	health: int,
+
+	class: Class,
 }
 
 player_get_pos :: proc(player: Player) -> rl.Vector2{

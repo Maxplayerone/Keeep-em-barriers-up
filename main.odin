@@ -14,9 +14,12 @@ main :: proc(){
 
 	player := Player{
 		rect = rl.Rectangle{WIDTH / 2, HEIGHT / 2, 50.0, 50.0},
-		speed = 8.0,
 		forward = rl.Vector2{0.0, -1.0},
+
+		speed = 8.0,
 		health = 100,
+
+		class = .Normal,
 	}
 
 	bullets: [dynamic]Bullet
@@ -29,6 +32,7 @@ main :: proc(){
 		speed = 5.0,
 		to_player_radius = 200.0,
 		time_btw_shots = 45.0,
+		class = .Normal,
 	}
 
 	enemies: [dynamic]Enemy
@@ -40,15 +44,10 @@ main :: proc(){
 		add_bullet := player_add_bullet()
 
 		if add_bullet{
-			bullet := Bullet{
-				radius = BULLET_RADIUS,
-				color = BULLET_COLOR,
-				speed = BULLET_SPEED,
-				pos = player_get_center(player),
-				forward = vec_norm(player.forward),
-				dmg = BULLET_DAMAGE, 
-				attack_enemy = true
-			}
+			bullet := create_bullet(player.class)
+			bullet.pos = player_get_center(player)
+			bullet.forward = vec_norm(player.forward)
+			bullet.attack_enemy = true
 			append(&bullets, bullet)
 		}
 
@@ -69,8 +68,9 @@ main :: proc(){
 				}
 			}
 
-			if !bullets[i].attack_enemy && is_bullet_colliding_with_rect(bullets[i], player.rect){
+			if !removed_bullet && !bullets[i].attack_enemy && is_bullet_colliding_with_rect(bullets[i], player.rect){
 				player.health -= bullets[i].dmg
+				fmt.println("Player health: ", player.health)
 
 				removed_bullet = true
 				unordered_remove(&bullets, i)
@@ -80,7 +80,7 @@ main :: proc(){
 			}
 		}
 
-		if player.health < 0.0{
+		if player.health <= 0.0{
 			fmt.println("your ded")
 			break
 		}
@@ -107,15 +107,9 @@ main :: proc(){
 				enemies[i] = enemy_update(enemies[i], player_get_pos(player))
 				if enemies[i].can_shoot{
 
-					bullet := Bullet{
-						radius = BULLET_RADIUS,
-						color = BULLET_COLOR,
-						speed = BULLET_SPEED,
-						pos = enemy_center(enemies[i]),
-						forward = enemies[i].forward,
-						dmg = BULLET_DAMAGE, 
-						attack_enemy = false,
-					}
+					bullet := create_bullet(enemies[i].class)
+					bullet.pos = enemy_center(enemies[i])
+					bullet.forward = enemies[i].forward
 					append(&bullets, bullet)
 
 					enemies[i].can_shoot = false

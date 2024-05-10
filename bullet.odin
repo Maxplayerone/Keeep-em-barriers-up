@@ -7,14 +7,49 @@ BULLET_SPEED :: 15.0
 BULLET_COLOR :: rl.LIME
 BULLET_DAMAGE :: 20
 
+Class :: enum{
+    Normal,
+    Shotgun,
+}
+
 Bullet :: struct{
     pos: rl.Vector2,
     forward: rl.Vector2,
-    radius: f32,
+
+    /* can be changed by bulletType */
     color: rl.Color,
+    radius: f32,
     speed: f32,
     dmg: int,
+
     attack_enemy: bool,
+}
+
+create_bullet :: proc(type: Class) -> Bullet{
+    bullet := Bullet{}
+    switch type{
+        case .Normal: bullet = create_bullet_normal()
+        case .Shotgun: bullet = create_bullet_shotgun()
+    }
+    return bullet
+}
+
+create_bullet_normal :: proc() -> Bullet{
+    return Bullet{
+        color = rl.Color{200, 200, 200, 255},
+        radius = 10.0,
+        speed = 12.0,
+        dmg = 20.0,
+    }
+}
+
+create_bullet_shotgun :: proc() -> Bullet{
+    return Bullet{
+        color = rl.Color{200, 200, 200, 255},
+        radius = 10.0,
+        speed = 12.0,
+        dmg = 20.0,
+    }
 }
 
 is_bullet_outside_screen :: proc(bullet: Bullet) -> bool{

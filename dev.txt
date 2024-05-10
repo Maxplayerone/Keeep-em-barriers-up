@@ -32,3 +32,10 @@ you would go to a shop and you could buy upgrades etc.
 -player can take damage from the bullets
 -custom bullets
 
+--testing custom bullets--
+
+Enemy :: struct{
+    bullet_type: BulletType
+}
+
+bullet := create_bullet(enemy.bullet_type)
