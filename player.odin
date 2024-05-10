@@ -49,7 +49,7 @@ player_update :: proc(player: Player) -> Player{
 	player.cur_time += 1.0
 	if player.cur_time >= player.reload_time{
 		player.can_shoot = true
-		player.cur_time = 0.0
+		//player.cur_time = 0.0 //setting up when player.can_shoot = false in main
 	}
 
 	return player
@@ -68,6 +68,18 @@ player_draw_forward_vec :: proc(player: Player){
 	rl.DrawLineEx(player_get_center(player), player_get_center(player) + vec_norm(player.forward) * 50.0, 6.0, rl.ORANGE)
 }
 
-player_render :: proc(player: Player){
+player_draw :: proc(player: Player){
 	rl.DrawRectangleRec(player.rect, rl.WHITE)
+}
+
+player_draw_reload_bar :: proc(player: Player){
+	outer_rec := rl.Rectangle{20.0, 50.0, 140.0, 30.0}
+	offset: f32 = 5.0
+	fill_amount := player.cur_time / player.reload_time
+	if fill_amount > 1.0{
+		fill_amount = 1.0
+	}
+	rl.DrawRectangleRec(outer_rec, rl.GRAY)
+	rl.DrawRectangleRec(rl.Rectangle{outer_rec.x + offset, outer_rec.y + offset, (outer_rec.width - 2 * offset) * fill_amount, outer_rec.height - 2 * offset}, rl.GREEN)
+	rl.DrawText("Reload time", i32(outer_rec.x), i32(outer_rec.y - outer_rec.height), 25, rl.WHITE)
 }

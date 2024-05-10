@@ -45,6 +45,7 @@ main :: proc(){
 
 		if player_add_bullet(player.can_shoot){
 			player.can_shoot = false
+			player.cur_time = 0.0
 
 			if player.class == .Shotgun{
 				for i in 0..<5{
@@ -95,7 +96,7 @@ main :: proc(){
 
 		if player.health <= 0.0{
 			fmt.println("your ded")
-			break
+			//break
 		}
 
 		//BULLET UPDATING AND DELETING
@@ -141,7 +142,8 @@ main :: proc(){
 			bullet_render(bullet)
 		}
 
-		player_render(player)
+		player_draw(player)
+		player_draw_reload_bar(player)
 
 		for enemy in enemies{
 			enemy_render(enemy)
