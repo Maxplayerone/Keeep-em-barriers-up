@@ -45,6 +45,13 @@ main :: proc(){
 	enemies: [dynamic]Enemy
 	append(&enemies, enemy)
 
+	camera := rl.Camera2D{
+		offset = {WIDTH / 2, HEIGHT / 2},
+		target = player_get_pos(player),
+		rotation = 0.0,
+		zoom = 0.7,
+	}
+
 	for !rl.WindowShouldClose(){
 		player = player_update(player)
 
@@ -107,7 +114,7 @@ main :: proc(){
 		//BULLET UPDATING AND DELETING
 		i = 0
 		for i < len(bullets){
-			if is_bullet_outside_screen(bullets[i]){
+			if is_bullet_outside_screen(bullets[i], camera){
 				unordered_remove(&bullets, i)
 			}
 			else{
@@ -143,17 +150,23 @@ main :: proc(){
 		defer rl.EndDrawing()
 		rl.ClearBackground(rl.BLACK)
 
+		rl.BeginMode2D(camera)
+
 		for bullet in bullets{
 			bullet_render(bullet)
 		}
 
 		player_draw(player)
-		player_draw_reload_bar(player)
-		player_draw_health_bar(player)
+		//player_draw_forward_vec(player)
 
 		for enemy in enemies{
 			enemy_render(enemy)
 			enemy_render_healthbar(enemy)
 		}
+
+		rl.EndMode2D()
+
+		player_draw_reload_bar(player)
+		player_draw_health_bar(player)
 	}
 }

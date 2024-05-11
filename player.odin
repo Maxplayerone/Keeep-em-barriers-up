@@ -70,7 +70,7 @@ player_add_bullet :: proc(can_shoot: bool) -> bool{
 }
 
 player_draw_forward_vec :: proc(player: Player){
-	rl.DrawLineEx(player_get_center(player), player_get_center(player) + vec_norm(player.forward) * 50.0, 6.0, rl.ORANGE)
+	rl.DrawLineEx(player_get_center(player), player_get_center(player) + vec_norm(player.forward) * 1000.0, 6.0, rl.ORANGE)
 }
 
 player_draw :: proc(player: Player){

@@ -79,9 +79,10 @@ create_bullet_fire_wizard :: proc() -> Bullet{
     }
 }
 
-is_bullet_outside_screen :: proc(bullet: Bullet) -> bool{
-	width := f32(WIDTH)
-	height := f32(HEIGHT)
+is_bullet_outside_screen :: proc(bullet: Bullet, camera: rl.Camera2D) -> bool{
+    //(NOTE): this is still incorrect, should fix this 
+	width := f32(WIDTH)/ camera.zoom
+	height := f32(HEIGHT) / camera.zoom
 	return bullet.pos.x > width || bullet.pos.x < 0.0 || bullet.pos.y > height || bullet.pos.y < 0.0
 }
 
