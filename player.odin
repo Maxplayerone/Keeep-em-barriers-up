@@ -17,6 +17,8 @@ Player :: struct{
 	reload_time: f32,
 	cur_time: f32,
 	can_shoot: bool,
+
+	ammo_icon: rl.Texture2D,
 }
 
 player_get_pos :: proc(player: Player) -> rl.Vector2{
@@ -73,7 +75,7 @@ player_draw :: proc(player: Player){
 }
 
 player_draw_reload_bar :: proc(player: Player){
-	outer_rec := rl.Rectangle{20.0, 50.0, 140.0, 30.0}
+	outer_rec := rl.Rectangle{40.0, 50.0, 140.0, 30.0}
 	offset: f32 = 5.0
 	fill_amount := player.cur_time / player.reload_time
 	if fill_amount > 1.0{
@@ -81,5 +83,6 @@ player_draw_reload_bar :: proc(player: Player){
 	}
 	rl.DrawRectangleRec(outer_rec, rl.GRAY)
 	rl.DrawRectangleRec(rl.Rectangle{outer_rec.x + offset, outer_rec.y + offset, (outer_rec.width - 2 * offset) * fill_amount, outer_rec.height - 2 * offset}, rl.GREEN)
-	rl.DrawText("Reload time", i32(outer_rec.x), i32(outer_rec.y - outer_rec.height), 25, rl.WHITE)
+	rl.DrawTextureEx(player.ammo_icon, rl.Vector2{outer_rec.x - 30.0 - f32(player.ammo_icon.width), outer_rec.y - 24.0}, 0.0, 4.0, rl.WHITE)
+	//rl.DrawText("Reload time", i32(outer_rec.x), i32(outer_rec.y - outer_rec.height), 25, rl.WHITE)
 }

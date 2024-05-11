@@ -20,7 +20,8 @@ main :: proc(){
 		health = 100,
 
 		class = .Shotgun,
-		cur_time = 1000.0
+		cur_time = 1000.0,
+		ammo_icon = rl.LoadTexture("res/ammo.png"),
 	}
 	player.reload_time = get_reload_time_for_class(player.class)
 
