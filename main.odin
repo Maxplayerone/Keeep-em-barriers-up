@@ -17,11 +17,15 @@ main :: proc(){
 		forward = rl.Vector2{0.0, -1.0},
 
 		speed = 8.0,
+
 		health = 100,
+		max_health = 100.0,
 
 		class = .Shotgun,
 		cur_time = 1000.0,
+
 		ammo_icon = rl.LoadTexture("res/ammo.png"),
+		heart_icon = rl.LoadTexture("res/heart.png")
 	}
 	player.reload_time = get_reload_time_for_class(player.class)
 
@@ -145,6 +149,7 @@ main :: proc(){
 
 		player_draw(player)
 		player_draw_reload_bar(player)
+		player_draw_health_bar(player)
 
 		for enemy in enemies{
 			enemy_render(enemy)
